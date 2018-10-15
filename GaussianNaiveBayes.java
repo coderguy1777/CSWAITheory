@@ -1,4 +1,3 @@
-package com.company;
 /*
    A Program that does Gaussian Naive bayes for a given set of data w
  */
@@ -30,11 +29,17 @@ public class GaussianNaiveBayes {
     private static double VarianceofYCoordinates;
     public static double MeanofEntireTrainingDataSet;
     private static double VarianceforBothXandYCoordinates;
-    private static double fractionaldivider;
+    private static double fractionaldivider1;
+    private static double fractionaldivider2;
     private static double bottomHalfofFormula;
     private static double squarerootingofformula;
     private static double muforx;
     private static double mufory;
+    private static double exponent1offormula;
+    private static double exponent2offformula;
+    private static double FinalPartforX;
+    private static double FinalPartforY;
+
 
 
     /*
@@ -53,11 +58,18 @@ public class GaussianNaiveBayes {
       @return value: the return value is a confirmation message that will say if the data has been read,
       with that message being "Data Has been Read.", after which the program will continue as normal.
      */
-
     private static void DataSetReadingConfirmation() {
         String a = "Data has been read";
         System.out.println(a);
     }
+
+    /*
+      @param: The First Parameter of this method is using the declared Arraylist of Doubles, and scans into the data file giiven
+      , which is data.txt in this case.
+      @param: The Second Parameter of this method is scanning the .txt file given, which contains all the data points that
+      the program uses to calculate the probabilitys using the Gaussian Naive Bayes formula.
+      @return: the return value of this method is
+     */
 
     private static ArrayList<ArrayList<Double>> FileReader() {
         try {
@@ -177,11 +189,23 @@ public class GaussianNaiveBayes {
         return SumofY;
     }
 
+     /*
+      @param: The First Parameter of this method is taking the SumofY then dividing that by 4.
+      @param: The Second Parameter of this method is taking the divided SumofY divided by 4 and multiplying that by 1.
+      @return: The Return Value of this Method is adding the SumofY Divided by 4 and Multiplying that by one, and then
+      assigning that to the static double of MeanofYCoordinates, allowing it to be used throughout the program.
+     */
     private static void MeanofXCoordinatesFramework() {
         int i = 1;
         MeanofXCoordinates = SumofX / 4 * i;
     }
 
+     /*
+      @param: The First Parameter of this method is taking the SumofY then dividing that by 4.
+      @param: The Second Parameter of this method is taking the divided SumofY divided by 4 and multiplying that by 1.
+      @return: The Return Value of this Method is adding the SumofY Divided by 4 and Multiplying that by one, and then
+      assigning that to the static double of MeanofYCoordinates, allowing it to be used throughout the program.
+     */
     private static void MeanofYCoordinatesFramework() {
         int i = 1;
         MeanofYCoordinates = SumofY / 4 * i;
@@ -215,6 +239,11 @@ public class GaussianNaiveBayes {
         return VarianceofYCoordinates;
     }
 
+    /*
+    @param:
+    @param:
+    @return:
+     */
     private static void VarianceforbothXandY() {
         VarianceforBothXandYCoordinates = VarianceFrameworkForXCoordinates(XCoordinatess) + VarianceFrameWorkForYCoordinates(YCoordinates);
     }
@@ -225,25 +254,37 @@ public class GaussianNaiveBayes {
         for(int i = 0; i < FinalValues.size(); i++) {
             bottomHalfofFormula = 2 * 3.14 * VarianceforBothXandYCoordinates;
             squarerootingofformula = Math.sqrt(bottomHalfofFormula);
-            fractionaldivider = 1/squarerootingofformula;
+            fractionaldivider1 = 1/squarerootingofformula;
         }
     }
 
+    /*
+    @param:
+    @param:
+    @return:
+     */
     private static void NonPoweredPartofFormulaforY() {
         double Finalvalue2 = 0;
         double sigmay = VarianceFrameWorkForYCoordinates(YCoordinates);
         for(int i = 0; i < FinalValues.size(); i++) {
             bottomHalfofFormula = 2 * 3.14 * VarianceforBothXandYCoordinates;
             squarerootingofformula = Math.sqrt(bottomHalfofFormula);
-            fractionaldivider = 1/squarerootingofformula;
+            fractionaldivider2 = 1/squarerootingofformula;
         }
     }
 
+    /*
+    @param:
+    @param:
+    @return:
+     */
     private static void SolvingofPoweredPartforx() {
         double XUserInput = XandYArray[0];
         muforx = MeanofXCoordinates;
         for(int i = 0; i < FinalValues.size(); i++) {
-
+            double tophalfofexponent = XUserInput - muforx;
+            double bottomhalfofexponent = 2 * VarianceFrameworkForXCoordinates(XCoordinatess);
+            exponent1offormula = -(tophalfofexponent/bottomhalfofexponent);
         }
     }
 
@@ -251,7 +292,31 @@ public class GaussianNaiveBayes {
         double YUserInput = XandYArray[1];
         mufory = MeanofYCoordinates;
         for(int i = 0; i < FinalValues.size(); i++) {
-
+            double tophalfofexponent2 = Math.pow(YUserInput - mufory, 2);
+            double bottomhalfofexponent2 = 2 * VarianceFrameWorkForYCoordinates(YCoordinates);
+            exponent2offformula = -(tophalfofexponent2/bottomhalfofexponent2);
         }
+    }
+
+    private static void FinalCombinationofFormulaforX() {
+        FinalPartforX = (fractionaldivider1 * exponent1offormula) + (fractionaldivider1 * exponent1offormula);
+        int i = 0;
+    }
+
+    private static void FinalCombinationofFormulaforY() {
+        FinalPartforY = (fractionaldivider2 * exponent2offformula) + (fractionaldivider2 * exponent2offformula);
+        int i = 0;
+    }
+
+    private static void CombiningofFormulafortotalProbabilityforX() {
+        double CombinedFormula = FinalPartforX * FinalPartforY * XandYArray[0];
+        System.out.println("Class0 Probability is:" + "," + CombinedFormula + "," + "For the Class 0 Probability");
+        int i = 0;
+    }
+
+    private static void CombiningofFormulafortotalProbabilityforY() {
+        double CombinedFormulaforClass1 = FinalPartforX * FinalPartforY * XandYArray[1];
+        System.out.println("Class1 Probability is:" + "," + CombinedFormulaforClass1 + "," + "For Class 1 Probability");
+        int i = 0;
     }
 }
