@@ -1,4 +1,7 @@
 package com.company;
+/*
+   A Program that does Gaussian Naive bayes for a given set of data w
+ */
 import java.util.Scanner;
 import java.io.*;
 import java.util.ArrayList;
@@ -13,7 +16,9 @@ public class GaussianNaiveBayes {
     private static ArrayList<Double> XCoordinatess = new ArrayList<Double>();
     private static ArrayList<Double> XandYPointStorage = new ArrayList<Double>();
     private static ArrayList<Double> YCoordinates = new ArrayList<Double>();
+    private static ArrayList<Double> FinalValues = new ArrayList<Double>();
 
+    //All the Static Integers and Doubles I used for my Program when making it.
     private static int trueclassnumber;
     private static double Coordinate1;
     private static double Coordinate2;
@@ -24,11 +29,30 @@ public class GaussianNaiveBayes {
     private static double MeanofYCoordinates;
     private static double VarianceofYCoordinates;
     public static double MeanofEntireTrainingDataSet;
+    private static double VarianceforBothXandYCoordinates;
+    private static double fractionaldivider;
+    private static double bottomHalfofFormula;
+    private static double squarerootingofformula;
+    private static double muforx;
+    private static double mufory;
 
 
+    /*
+      @param: the first parameter of this method is to trigger the user input of the program.
+      @param: the second parameter of this method is to use the user input method and ask for X and Y inputs.
+      @return value: the return value of this method is using the user input methods and storing those values
+      into an ArrayList and then Array once that next method is triggered.
+     */
     public static void main(String[] args) {
         UserInput();
     }
+
+    /*
+      @param: The First Parameter of this method is to check if the dataset has been read properly.
+      @param: The Second Parameter of this Method is to then go into its return value.
+      @return value: the return value is a confirmation message that will say if the data has been read,
+      with that message being "Data Has been Read.", after which the program will continue as normal.
+     */
 
     private static void DataSetReadingConfirmation() {
         String a = "Data has been read";
@@ -41,10 +65,8 @@ public class GaussianNaiveBayes {
             ArrayList<ArrayList<Integer>> Coordinates = new ArrayList<ArrayList<Integer>>();
             ArrayList<ArrayList<Double>> dataset = new ArrayList<ArrayList<Double>>();
 
-
             while (scan.hasNext()) {
                 trueclassnumber = scan.nextInt();
-
                 if (dataset.size() < trueclassnumber + 1) {
                     dataset.add(new ArrayList<Double>());
                     Coordinates.add(new ArrayList<Integer>());
@@ -136,6 +158,7 @@ public class GaussianNaiveBayes {
         MeanofXCoordinatesFramework();
         MeanofYCoordinatesFramework();
         MeanValueoftheDataSet();
+        VarianceforbothXandY();
     }
 
     private static double SumofXFramework() {
@@ -192,10 +215,43 @@ public class GaussianNaiveBayes {
         return VarianceofYCoordinates;
     }
 
-    private static void ProbabilityforXCoordinates(ArrayList<Double>XandYPointStorage) {
-        double Finalvalue = 0;
-        double sigma = VarianceFrameworkForXCoordinates(XCoordinatess);
-        double muforx = MeanofXCoordinates;
+    private static void VarianceforbothXandY() {
+        VarianceforBothXandYCoordinates = VarianceFrameworkForXCoordinates(XCoordinatess) + VarianceFrameWorkForYCoordinates(YCoordinates);
+    }
 
+    private static void NonPoweredPartofFormulaforX() {
+        double Finalvalue = 0;
+        double sigmax = VarianceFrameworkForXCoordinates(XCoordinatess);
+        for(int i = 0; i < FinalValues.size(); i++) {
+            bottomHalfofFormula = 2 * 3.14 * VarianceforBothXandYCoordinates;
+            squarerootingofformula = Math.sqrt(bottomHalfofFormula);
+            fractionaldivider = 1/squarerootingofformula;
+        }
+    }
+
+    private static void NonPoweredPartofFormulaforY() {
+        double Finalvalue2 = 0;
+        double sigmay = VarianceFrameWorkForYCoordinates(YCoordinates);
+        for(int i = 0; i < FinalValues.size(); i++) {
+            bottomHalfofFormula = 2 * 3.14 * VarianceforBothXandYCoordinates;
+            squarerootingofformula = Math.sqrt(bottomHalfofFormula);
+            fractionaldivider = 1/squarerootingofformula;
+        }
+    }
+
+    private static void SolvingofPoweredPartforx() {
+        double XUserInput = XandYArray[0];
+        muforx = MeanofXCoordinates;
+        for(int i = 0; i < FinalValues.size(); i++) {
+
+        }
+    }
+
+    private static void SolvingofPoweredPartforY() {
+        double YUserInput = XandYArray[1];
+        mufory = MeanofYCoordinates;
+        for(int i = 0; i < FinalValues.size(); i++) {
+
+        }
     }
 }
