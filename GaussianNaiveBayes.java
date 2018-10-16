@@ -1,16 +1,6 @@
-package com.company;
 /*
-   A Program that does Gaussian Naive bayes for a given set of data with points,
-   and for a user to type input points, for the probability to be then solved for
-   with the Gaussian Naive Bayes Formula.
-   By @Jordan Hill
-   AI Theory Period: F.
+   A Program that does Gaussian Naive bayes for a given set of data w
  */
-
-//Below are all the imports used, those being:
-//Scanner
-//Random, or .io.*;
-//And the Last Import being ArrayList
 import java.util.Scanner;
 import java.io.*;
 import java.util.ArrayList;
@@ -31,6 +21,8 @@ public class GaussianNaiveBayes {
     private static int trueclassnumber;
     private static double Coordinate1;
     private static double Coordinate2;
+    private static double xvalue1;
+    private static double yvalue2;
     private static double SumofX;
     private static double MeanofXCoordinates;
     private static double VarianceofXCoordinates;
@@ -49,6 +41,7 @@ public class GaussianNaiveBayes {
     private static double exponent2offformula;
     private static double FinalPartforX;
     private static double FinalPartforY;
+
 
     /*
       @param: the first parameter of this method is to trigger the user input of the program.
@@ -75,12 +68,13 @@ public class GaussianNaiveBayes {
       @param: The First Parameter of this method is using the declared Arraylist of Doubles, and scans into the data file giiven
       , which is data.txt in this case.
       @param: The Second Parameter of this method is scanning the .txt file given, which contains all the data points that
-      the program uses to calculate the probability using the Gaussian Naive Bayes formula.
+      the program uses to calculate the probabilitys using the Gaussian Naive Bayes formula.
       @return: the return value of this method is
      */
+
     private static ArrayList<ArrayList<Double>> FileReader() {
         try {
-            Scanner scan = new Scanner(new BufferedReader(new FileReader("data.txt")));
+            Scanner scan = new Scanner(new BufferedReader(new FileReader("data")));
             ArrayList<ArrayList<Integer>> Coordinates = new ArrayList<ArrayList<Integer>>();
             ArrayList<ArrayList<Double>> dataset = new ArrayList<ArrayList<Double>>();
 
@@ -91,7 +85,7 @@ public class GaussianNaiveBayes {
                     Coordinates.add(new ArrayList<Integer>());
 
                 }
-                Coordinate1 = scan.nextDouble(); //For Scanning X Coordinates for adding to the
+                Coordinate1 = scan.nextDouble();
                 Coordinate2 = scan.nextDouble();
 
                 dataset.get(trueclassnumber).add(Coordinate1);
@@ -114,20 +108,13 @@ public class GaussianNaiveBayes {
         }
     }
 
-    /*
-    @param:
-    @param:
-    @return:
-     */
     public static ArrayList<ArrayList<Integer>> UserInput() {
         Scanner scan = new Scanner(System.in);
         System.out.println("Please Enter X:");
-        double x = scan.nextDouble();
-        XandYPointStorage.add(x);
-        System.out.println("You entered:" + " " + x + "for x, now please enter Y.");
-        double y = scan.nextDouble();
-        XandYPointStorage.add(y);
-        System.out.println("You entered:" + " " + x + "," + y + " " + "for both points for the Gaussian Naive bayes to Solve for, please confirm this is correct, by typing Y or N.");
+        xvalue1 = scan.nextDouble();
+        System.out.println("You entered:" + " " + xvalue1 + "for x, now please enter Y.");
+        yvalue2 = scan.nextDouble();
+        System.out.println("You entered:" + " " + xvalue1 + "," + yvalue2 + " " + "for both points for the Gaussian Naive bayes to Solve for, please confirm this is correct, by typing Y or N.");
         String Input = scan.next();
         if (Input.equals("Y")) {
             System.out.println("The Program will now calculate the probability that your points exist, please wait while this is done.");
@@ -147,15 +134,9 @@ public class GaussianNaiveBayes {
                 break;
             }
         }
-        System.out.println(XandYPointStorage);
         return null;
     }
 
-    /*
-    @param:
-    @param:
-    @return:
-     */
     private static void XandYPointStorageArray() {
         XandYArray = new Double[XandYPointStorage.size()];
         for (int i = 0; i < XandYPointStorage.size(); i++) {
@@ -164,11 +145,6 @@ public class GaussianNaiveBayes {
 
     }
 
-    /*
-    @param:
-    @param:
-    @return:
-     */
     private static void XCoordinateArray() {
         XCoordinates = new double[XCoordinatess.size()];
         for (int i = 0; i < XCoordinatess.size(); i++) {
@@ -254,7 +230,7 @@ public class GaussianNaiveBayes {
     }
 
     /*
-    @param:
+    @param: The First parameter of this method 
     @param:
     @return:
      */
@@ -267,11 +243,11 @@ public class GaussianNaiveBayes {
     @param:
     @return:
      */
-    private static double VarianceFrameworkForXCoordinates(ArrayList<Double>XCoordinatess) {
+    private static double VarianceFrameworkForXCoordinates(ArrayList<Double> XCoordinatess) {
         double variance = 0;
         VarianceofXCoordinates = 0;
         double average = MeanofXCoordinates;
-        for(double num : XCoordinatess) {
+        for (double num : XCoordinatess) {
             variance = Math.pow((num * 1.0 - average), 2);
             VarianceofXCoordinates += variance;
         }
@@ -284,11 +260,11 @@ public class GaussianNaiveBayes {
     @param:
     @return:
      */
-    private static double VarianceFrameWorkForYCoordinates(ArrayList<Double>YCoordinates) {
+    private static double VarianceFrameWorkForYCoordinates(ArrayList<Double> YCoordinates) {
         double variance = 0;
         VarianceofYCoordinates = 0;
         double meanformethod = MeanofYCoordinates;
-        for(double pointvalue : YCoordinates) {
+        for (double pointvalue : YCoordinates) {
             variance = Math.pow((pointvalue * 1.0 - meanformethod), 2);
             VarianceofYCoordinates += variance;
         }
@@ -302,108 +278,24 @@ public class GaussianNaiveBayes {
     @return:
      */
     private static void VarianceforbothXandY() {
-        VarianceforBothXandYCoordinates = VarianceFrameworkForXCoordinates(XCoordinatess) + VarianceFrameWorkForYCoordinates(YCoordinates);
-    }
+        double Variance1 = VarianceFrameworkForXCoordinates(XCoordinatess);
+        double Variance2 = VarianceFrameWorkForYCoordinates(YCoordinates);
+        VarianceforBothXandYCoordinates = Variance1 + Variance2;
+        double sigmax = MeanofXCoordinates;
+        double sigmay = MeanofYCoordinates;
+        MeanofEntireTrainingDataSet = sigmax + sigmay;
+        double firstvalue = 1 / Math.sqrt(2 * 3.14 * Variance1);
+        double secondvalue = 1 / Math.sqrt(2 * 3.14 * Variance2);
+        double exponentvalue1 = -1.0 * (Math.pow(xvalue1 - MeanofXCoordinates, 2) / 2 * Variance1);
+        double exponentvalue2 = -1.0 * (Math.pow(yvalue2 - MeanofYCoordinates, 2) / 2 * Variance2);
+        double multiplyingvalue1 = firstvalue * exponentvalue1;
+        double multiplyingvalue2 = secondvalue * exponentvalue2;
+        double finalvalue1 = multiplyingvalue1 * multiplyingvalue1;
+        double finalvalue2 = multiplyingvalue2 * multiplyingvalue2;
+        double finalpartofformula = xvalue1 / finalvalue1 / finalvalue2;
+        double finalpartofformula2 = yvalue2 / finalvalue1 / finalvalue2;
+        System.out.println(finalpartofformula);
+        System.out.println(finalpartofformula2);
 
-    /*
-    @param:
-    @param:
-    @return:
-     */
-    private static void NonPoweredPartofFormulaforX() {
-        double Finalvalue = 0;
-        double sigmax = VarianceFrameworkForXCoordinates(XCoordinatess);
-        for(int i = 0; i < FinalValues.size(); i++) {
-            bottomHalfofFormula = 2 * 3.14 * VarianceforBothXandYCoordinates;
-            squarerootingofformula = Math.sqrt(bottomHalfofFormula);
-            fractionaldivider1 = 1/squarerootingofformula;
-        }
-    }
-
-    /*
-    @param:
-    @param:
-    @return:
-     */
-    private static void NonPoweredPartofFormulaforY() {
-        double Finalvalue2 = 0;
-        double sigmay = VarianceFrameWorkForYCoordinates(YCoordinates);
-        for(int i = 0; i < FinalValues.size(); i++) {
-            bottomHalfofFormula = 2 * 3.14 * VarianceforBothXandYCoordinates;
-            squarerootingofformula = Math.sqrt(bottomHalfofFormula);
-            fractionaldivider2 = 1/squarerootingofformula;
-        }
-    }
-
-    /*
-    @param:
-    @param:
-    @return:
-     */
-    private static void SolvingofPoweredPartforx() {
-        double XUserInput = XandYArray[0];
-        muforx = MeanofXCoordinates;
-        for(int i = 0; i < FinalValues.size(); i++) {
-            double tophalfofexponent = XUserInput - muforx;
-            double bottomhalfofexponent = 2 * VarianceFrameworkForXCoordinates(XCoordinatess);
-            exponent1offormula = -(tophalfofexponent/bottomhalfofexponent);
-        }
-    }
-
-    /*
-    @param:
-    @param:
-    @return:
-     */
-    private static void SolvingofPoweredPartforY() {
-        double YUserInput = XandYArray[1];
-        mufory = MeanofYCoordinates;
-        for(int i = 0; i < FinalValues.size(); i++) {
-            double tophalfofexponent2 = Math.pow(YUserInput - mufory, 2);
-            double bottomhalfofexponent2 = 2 * VarianceFrameWorkForYCoordinates(YCoordinates);
-            exponent2offformula = -(tophalfofexponent2/bottomhalfofexponent2);
-        }
-    }
-
-    /*
-    @param:
-    @param:
-    @return:
-     */
-    private static void FinalCombinationofFormulaforX() {
-        FinalPartforX = (fractionaldivider1 * exponent1offormula) + (fractionaldivider1 * exponent1offormula);
-        int i = 0;
-    }
-
-    /*
-    @param:
-    @param:
-    @return:
-     */
-    private static void FinalCombinationofFormulaforY() {
-        FinalPartforY = (fractionaldivider2 * exponent2offformula) + (fractionaldivider2 * exponent2offformula);
-        int i = 0;
-    }
-
-    /*
-    @param:
-    @param:
-    @return:
-     */
-    private static void CombiningofFormulafortotalProbabilityforX() {
-        double CombinedFormula = FinalPartforX * FinalPartforY * XandYArray[0];
-        System.out.println("Class0 Probability is:" + "," + CombinedFormula + "," + "For the Class 0 Probability");
-        int i = 0;
-    }
-
-    /*
-    @param:
-    @param:
-    @return:
-     */
-    private static void CombiningofFormulafortotalProbabilityforY() {
-        double CombinedFormulaforClass1 = FinalPartforX * FinalPartforY * XandYArray[1];
-        System.out.println("Class1 Probability is:" + "," + CombinedFormulaforClass1 + "," + "For Class 1 Probability");
-        int i = 0;
     }
 }
