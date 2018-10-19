@@ -1,3 +1,4 @@
+package com.company;
 /*
    A Program that does Gaussian Naive bayes for a given set of data w
  */
@@ -31,16 +32,11 @@ public class GaussianNaiveBayes {
     private static double VarianceofYCoordinates;
     public static double MeanofEntireTrainingDataSet;
     private static double VarianceforBothXandYCoordinates;
-    private static double fractionaldivider1;
-    private static double fractionaldivider2;
-    private static double bottomHalfofFormula;
-    private static double squarerootingofformula;
-    private static double muforx;
-    private static double mufory;
-    private static double exponent1offormula;
-    private static double exponent2offformula;
     private static double FinalPartforX;
     private static double FinalPartforY;
+    private static double FinalPartofFormula1;
+    private static double FinalPartofFormula2;
+
 
 
     /*
@@ -74,13 +70,13 @@ public class GaussianNaiveBayes {
 
     private static ArrayList<ArrayList<Double>> FileReader() {
         try {
-            Scanner scan = new Scanner(new BufferedReader(new FileReader("data")));
-            ArrayList<ArrayList<Integer>> Coordinates = new ArrayList<ArrayList<Integer>>();
-            ArrayList<ArrayList<Double>> dataset = new ArrayList<ArrayList<Double>>();
+            Scanner scan = new Scanner(new BufferedReader(new FileReader("data.txt")));
+            ArrayList<ArrayList<Integer>> Coordinates = new ArrayList<ArrayList<Integer>>(); //Array List used for storing coordinates.
+            ArrayList<ArrayList<Double>> dataset = new ArrayList<>();
 
             while (scan.hasNext()) {
                 trueclassnumber = scan.nextInt();
-                if (dataset.size() < trueclassnumber + 1) {
+                if (dataset.size() <= trueclassnumber + 1) {
                     dataset.add(new ArrayList<Double>());
                     Coordinates.add(new ArrayList<Integer>());
 
@@ -90,8 +86,6 @@ public class GaussianNaiveBayes {
 
                 dataset.get(trueclassnumber).add(Coordinate1);
                 dataset.get(trueclassnumber).add(Coordinate2);
-                XCoordinatess.add(Coordinate1);
-                YCoordinates.add(Coordinate2);
                 System.out.println(trueclassnumber + " " + Coordinate1 + " , " + Coordinate2);
 
                 while (!scan.hasNext()) {
@@ -178,7 +172,8 @@ public class GaussianNaiveBayes {
         MeanofXCoordinatesFramework();
         MeanofYCoordinatesFramework();
         MeanValueoftheDataSet();
-        VarianceforbothXandY();
+        FinalFormula();
+
     }
 
     /*
@@ -230,7 +225,7 @@ public class GaussianNaiveBayes {
     }
 
     /*
-    @param: The First parameter of this method 
+    @param: The First parameter of this method
     @param:
     @return:
      */
@@ -239,16 +234,18 @@ public class GaussianNaiveBayes {
     }
 
     /*
-    @param:
-    @param:
-    @return:
+    @param: The First Parameter of this Method is taking the Mean of the X Coordinates, and taking that value to be
+    assigned to a double, average.
+    @param: When that is done, a forEach loop occurs, in which a double assigned before the loop started, takes each value of the Class, and does Variance Parts with each value
+    and when that is done, all the values are taken and added up for the Variance of the Class, which in this case is class 0.
+    @return: The Return Value of this Method is the final value of the Variance for Class 0, which will be used later in the formula for the final probability.
      */
     private static double VarianceFrameworkForXCoordinates(ArrayList<Double> XCoordinatess) {
         double variance = 0;
         VarianceofXCoordinates = 0;
-        double average = MeanofXCoordinates;
+        double meanformethod1 = MeanofXCoordinates;
         for (double num : XCoordinatess) {
-            variance = Math.pow((num * 1.0 - average), 2);
+            variance = Math.pow((num * 1.0 - meanformethod1), 2);
             VarianceofXCoordinates += variance;
         }
         VarianceofXCoordinates = VarianceofXCoordinates / (XCoordinatess.size() - 1);
@@ -256,16 +253,17 @@ public class GaussianNaiveBayes {
     }
 
     /*
-    @param:
-    @param:
-    @return:
+    @param: The First Parameter of this method is same as the last method, and takes the Mean for the Y values of the class given, and assigns that
+    to the value of a double given.
+    @param: The Second Parameter of this Method is doing a forEach loop, and the Same thing as the last forEach loop in the previous method.
+    @return: The Return value of this method is the variance for the class 1 probability.
      */
     private static double VarianceFrameWorkForYCoordinates(ArrayList<Double> YCoordinates) {
         double variance = 0;
         VarianceofYCoordinates = 0;
-        double meanformethod = MeanofYCoordinates;
+        double meanformethod2 = MeanofYCoordinates;
         for (double pointvalue : YCoordinates) {
-            variance = Math.pow((pointvalue * 1.0 - meanformethod), 2);
+            variance = Math.pow((pointvalue * 1.0 - meanformethod2), 2);
             VarianceofYCoordinates += variance;
         }
         VarianceofYCoordinates = VarianceofYCoordinates / (YCoordinates.size() - 1);
@@ -277,7 +275,7 @@ public class GaussianNaiveBayes {
     @param:
     @return:
      */
-    private static void VarianceforbothXandY() {
+    private static void FinalFormula() {
         double Variance1 = VarianceFrameworkForXCoordinates(XCoordinatess);
         double Variance2 = VarianceFrameWorkForYCoordinates(YCoordinates);
         VarianceforBothXandYCoordinates = Variance1 + Variance2;
@@ -290,12 +288,17 @@ public class GaussianNaiveBayes {
         double exponentvalue2 = -1.0 * (Math.pow(yvalue2 - MeanofYCoordinates, 2) / 2 * Variance2);
         double multiplyingvalue1 = firstvalue * exponentvalue1;
         double multiplyingvalue2 = secondvalue * exponentvalue2;
-        double finalvalue1 = multiplyingvalue1 * multiplyingvalue1;
-        double finalvalue2 = multiplyingvalue2 * multiplyingvalue2;
-        double finalpartofformula = xvalue1 / finalvalue1 / finalvalue2;
-        double finalpartofformula2 = yvalue2 / finalvalue1 / finalvalue2;
-        System.out.println(finalpartofformula);
-        System.out.println(finalpartofformula2);
+        FinalPartforX = multiplyingvalue1 * multiplyingvalue1;
+        FinalPartforY = multiplyingvalue2 * multiplyingvalue2;
+        FinalPartofFormula1 = xvalue1 / FinalPartforX / FinalPartforY;
+        FinalPartofFormula2 = yvalue2 / FinalPartforX / FinalPartforY;
+    }
 
+    /*
+    @param:
+    @param:
+    @return:
+     */
+    private static void Probabilityprintout() {
     }
 }
