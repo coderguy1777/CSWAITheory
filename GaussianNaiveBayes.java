@@ -1,3 +1,4 @@
+package com.company;
 /*
    A Program that does Gaussian Naive bayes for a given set of data with the goal of doing
    Gaussian Naive Bayes to find the Probability of the point itself being in the dataset.
@@ -40,7 +41,6 @@ public class GaussianNaiveBayes {
     private static double FinalPartofFormula2; //Does the Combining of the Y user input with Y to find the probability of the Y Coordinate given by the user to be in the dataset.
 
 
-
     /*
       @param: the first parameter of this method is to trigger the user input of the program.
       @param: the second parameter of this method is to use the user input method and ask for X and Y inputs.
@@ -51,17 +51,6 @@ public class GaussianNaiveBayes {
         int i = 0;
         int x = 0;
         UserInput();
-    }
-
-    /*
-      @param: The First Parameter of this method is to check if the dataset has been read properly.
-      @param: The Second Parameter of this Method is to then go into its return value.
-      @return value: the return value is a confirmation message that will say if the data has been read,
-      with that message being "Data Has been Read.", after which the program will continue as normal.
-     */
-    private static void DataSetReadingConfirmation() {
-        String a = "Data has been read";
-        System.out.println(a);
     }
 
     /*
@@ -93,27 +82,23 @@ public class GaussianNaiveBayes {
      */
     private static ArrayList<ArrayList<Double>> FileReader() {
         try {
-            Scanner scan = new Scanner(new BufferedReader(new FileReader("data")));
+            Scanner scan = new Scanner(new BufferedReader(new FileReader("data.txt")));
             ArrayList<ArrayList<Double>> dataset = new ArrayList<>();
 
             while (scan.hasNext()) {
                 trueclassnumber = scan.nextInt();
-                if (dataset.size() <= trueclassnumber + 1) {
+                if (dataset.size() < trueclassnumber + 1) {
                     dataset.add(new ArrayList<Double>());
                 }
                 Coordinate1 = scan.nextDouble();
                 Coordinate2 = scan.nextDouble();
 
-                dataset.get(trueclassnumber).add(Coordinate1);
-                dataset.get(trueclassnumber).add(Coordinate2);
-                XCoordinatess.add(Coordinate1);
-                YCoordinates.add(Coordinate2);
+                XCoordinatess.add(trueclassnumber, Coordinate1);
+                YCoordinates.add(trueclassnumber, Coordinate2);
 
                 while (!scan.hasNext()) {
-                    DataSetReadingConfirmation();
                     break;
                 }
-                BackFunctions();
             }
             return dataset;
 
@@ -143,6 +128,7 @@ public class GaussianNaiveBayes {
         if (Input.equals("Y")) {
             System.out.println("The Program will now calculate the probability that your points exist, please wait while this is done.");
             FileReader();
+            BackFunctions();
         } else if (Input.equals("N")) {
             System.out.println("The Program will now end.");
             boolean endinput = true;
@@ -170,13 +156,6 @@ public class GaussianNaiveBayes {
     @return: The Return Value of this method is the User input values being stored in the XandYArray for use later on in the
     program for computing the final probability of the point being in the dataset in this case for this program.
      */
-    private static void XandYPointStorageArray() {
-        XandYArray = new Double[XandYPointStorage.size()];
-        for (int i = 0; i < XandYPointStorage.size(); i++) {
-            XandYArray[i] = XandYPointStorage.get(i);
-        }
-
-    }
 
     /*
     @param:
@@ -195,7 +174,6 @@ public class GaussianNaiveBayes {
     and makes it into a new array for the use within making a Y Coordinate Array.
     @param:
     @return: The Return value of this method is all the Y Values from the Arraylist that is storing the Y Coordinates into
-
      */
     private static void YCoordinateArray() {
         YCoordinatess = new double[YCoordinates.size()];
@@ -212,7 +190,6 @@ public class GaussianNaiveBayes {
     final probability of the class for each set of class points given.
      */
     private static void BackFunctions() {
-        XandYPointStorageArray();
         XandYStorerforAllClasses(dataset);
         XCoordinateArray();
         YCoordinateArray();
@@ -220,8 +197,7 @@ public class GaussianNaiveBayes {
         SumofYFramework();
         MeanofXCoordinatesFramework();
         MeanofYCoordinatesFramework();
-        Probabilityprintout();
-
+        FinalFormula();
     }
 
     /*
@@ -258,7 +234,7 @@ public class GaussianNaiveBayes {
     */
     private static void MeanofXCoordinatesFramework() {
         int i = 1;
-        MeanofXCoordinates = SumofX / 4 * i;
+        MeanofXCoordinates = SumofX / XCoordinatess.size() * i;
     }
 
     /*
@@ -269,7 +245,7 @@ public class GaussianNaiveBayes {
     */
     private static void MeanofYCoordinatesFramework() {
         int i = 1;
-        MeanofYCoordinates = SumofY / 4 * i;
+        MeanofYCoordinates = SumofY / YCoordinates.size() * i;
     }
 
     /*
@@ -337,8 +313,9 @@ public class GaussianNaiveBayes {
         FinalPartforX = multiplyingvalue1 * multiplyingvalue1;
         FinalPartforY = multiplyingvalue2 * multiplyingvalue2;
         //Combining of Formula for the final probability print out in the last method.
-        FinalPartofFormula1 = xvalue1 / FinalPartforX / FinalPartforY; //Probability for X values being in Dataset.
+        FinalPartofFormula1 = trueclassnumber/ FinalPartforX / FinalPartforY; //Probability for X values being in Dataset.
         FinalPartofFormula2 = yvalue2 / FinalPartforX / FinalPartforY; //Probability for Y values being in Dataset.
+        Probabilityprintout();
     }
 
     /*
@@ -353,8 +330,6 @@ public class GaussianNaiveBayes {
     System.out.println(), and after that the program itself ends with the final probability of the point values having been calculated.
      */
     private static void Probabilityprintout() {
-        FinalFormula();
         System.out.println("Class" + " " + trueclassnumber + " " + "Probability:" + " " + FinalPartofFormula1);
-        System.out.println("Class" + " " + trueclassnumber + " " + "Probability:" + " " + FinalPartofFormula2);
     }
 }
