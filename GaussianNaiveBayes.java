@@ -1,4 +1,3 @@
-package com.company;
 /*
    A Program that does Gaussian Naive bayes for a given set of data with the goal of doing
    Gaussian Naive Bayes to find the Probability of the point itself being in the dataset.
@@ -16,10 +15,12 @@ public class GaussianNaiveBayes {
     private static Double[] XandYArray;
     private static double[] XCoordinates;
     private static double[] YCoordinatess;
+    private static double[] ClasssValues;
     private static ArrayList<Double> dataset = new ArrayList<Double>();
     private static ArrayList<Double> XCoordinatess = new ArrayList<Double>();
     private static ArrayList<Double> XandYPointStorage = new ArrayList<Double>();
     private static ArrayList<Double> YCoordinates = new ArrayList<Double>();
+    private static ArrayList<Integer>ClassValue = new ArrayList<Integer>();
 
     //All the Static Integers and Doubles I used for my Program when making it.
     private static int trueclassnumber;
@@ -65,8 +66,8 @@ public class GaussianNaiveBayes {
         for(int i = 0; i < dataset.size(); i++) {
             XCoordinates[i] = XCoordinatess.get(i);
             YCoordinatess[i] = YCoordinates.get(i);
+            ClasssValues[i] = ClassValue.get(i);
         }
-
     }
 
     /*
@@ -82,19 +83,25 @@ public class GaussianNaiveBayes {
      */
     private static ArrayList<ArrayList<Double>> FileReader() {
         try {
-            Scanner scan = new Scanner(new BufferedReader(new FileReader("data.txt")));
+            Scanner scan = new Scanner(new BufferedReader(new FileReader("data")));
             ArrayList<ArrayList<Double>> dataset = new ArrayList<>();
 
             while (scan.hasNext()) {
                 trueclassnumber = scan.nextInt();
+                ClasssValues = new double[trueclassnumber];
                 if (dataset.size() < trueclassnumber + 1) {
                     dataset.add(new ArrayList<Double>());
+                    ClasssValues = new double[trueclassnumber];
                 }
                 Coordinate1 = scan.nextDouble();
                 Coordinate2 = scan.nextDouble();
-
-                XCoordinatess.add(trueclassnumber, Coordinate1);
-                YCoordinates.add(trueclassnumber, Coordinate2);
+                
+                dataset.get(trueclassnumber).add(Coordinate1);
+                dataset.get(trueclassnumber).add(Coordinate2);
+                ClassValue.add(trueclassnumber);
+                
+                XCoordinatess.add(Coordinate1);
+                YCoordinates.add(Coordinate2);
 
                 while (!scan.hasNext()) {
                     break;
@@ -169,6 +176,13 @@ public class GaussianNaiveBayes {
         }
     }
 
+    private static void ClassValuesArray() {
+        ClasssValues = new double[ClassValue.size()];
+        for(int i = 0; i < ClassValue.size(); i++) {
+            ClasssValues[i] = ClassValue.get(i);
+        }
+    }
+
     /*
     @param: The First parameter of this method is taking the size of the Arraylist that is storing the Y Coordinates, and
     and makes it into a new array for the use within making a Y Coordinate Array.
@@ -191,6 +205,7 @@ public class GaussianNaiveBayes {
      */
     private static void BackFunctions() {
         XandYStorerforAllClasses(dataset);
+        ClassValuesArray();
         XCoordinateArray();
         YCoordinateArray();
         SumofXFramework();
@@ -201,8 +216,10 @@ public class GaussianNaiveBayes {
     }
 
     /*
-    @param:
-    @param:
+    @param: The First Parameter of this method is taking the static value SumofX, and assigns it the value of zero, for use later
+    on within this method.
+    @param: The Second Parameter of this method is taking the static value of SumofX once again, but sums up all the points that are used within X for this formula
+    and use later on with in the mean.
     @return:
      */
     private static double SumofXFramework() {
@@ -313,7 +330,7 @@ public class GaussianNaiveBayes {
         FinalPartforX = multiplyingvalue1 * multiplyingvalue1;
         FinalPartforY = multiplyingvalue2 * multiplyingvalue2;
         //Combining of Formula for the final probability print out in the last method.
-        FinalPartofFormula1 = trueclassnumber/ FinalPartforX / FinalPartforY; //Probability for X values being in Dataset.
+        FinalPartofFormula1 = xvalue1/ FinalPartforX / FinalPartforY; //Probability for X values being in Dataset.
         FinalPartofFormula2 = yvalue2 / FinalPartforX / FinalPartforY; //Probability for Y values being in Dataset.
         Probabilityprintout();
     }
@@ -330,6 +347,10 @@ public class GaussianNaiveBayes {
     System.out.println(), and after that the program itself ends with the final probability of the point values having been calculated.
      */
     private static void Probabilityprintout() {
-        System.out.println("Class" + " " + trueclassnumber + " " + "Probability:" + " " + FinalPartofFormula1);
+        for(int i = 0; i < ClasssValues.length; i++) {
+            double classnumber = ClasssValues[i];
+            System.out.println("Class" + " " + classnumber + " " + "Probability:" + " " + FinalPartofFormula1);
+        }
+
     }
 }
