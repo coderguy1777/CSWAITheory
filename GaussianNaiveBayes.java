@@ -21,6 +21,8 @@ public class GaussianNaiveBayes {
     private static ArrayList<Double> XandYPointStorage = new ArrayList<Double>();
     private static ArrayList<Double> YCoordinates = new ArrayList<Double>();
     private static ArrayList<Integer>ClassValues = new ArrayList<Integer>();
+    private static ArrayList<Integer>ClassValues2 = new ArrayList<Integer>();
+    private static int[]ClassValuesArray;
 
     //All the Static Integers and Doubles I used for my Program when making it.
     private static int trueclassnumber;
@@ -147,6 +149,7 @@ public class GaussianNaiveBayes {
             System.out.println("The Program will now calculate the probability that your points exist, please wait while this is done.");
             FileReader();
             BackFunctions();
+            ClassValueloop();
         } else if (Input.equals("N")) {
             System.out.println("The Program will now end.");
             boolean endinput = true;
@@ -167,6 +170,19 @@ public class GaussianNaiveBayes {
     }
 
     /*
+    @param:
+    @param:
+    @return:
+     */
+    private static void ClassValueloop() {
+        for (int xx = 0; xx < ClassValues.size(); xx++) {
+            if (xx < trueclassnumber + 1) {
+                ClassValues2.add(xx);
+            }
+        }
+    }
+
+    /*
     @param: The First Parameter of this method is the make of a new Array for the use of the X and Y Point Storage,
     with those points being from the user input given, and then added to the array list for the storing of the user input
     values.
@@ -181,6 +197,18 @@ public class GaussianNaiveBayes {
             XandYArray[i] = XandYPointStorage.get(i);
         }
 
+    }
+
+    /*
+    @param:
+    @param:
+    @return:
+     */
+    private static void ClassValuesArray() {
+        ClassValuesArray = new int[ClassValues2.size()];
+        for(int i = 0; i < ClassValues2.size(); i++) {
+            ClassValuesArray[i] = ClassValues2.get(i);
+        }
     }
 
     /*
@@ -220,6 +248,8 @@ public class GaussianNaiveBayes {
     final probability of the class for each set of class points given.
      */
     private static void BackFunctions() {
+        ClassValueloop();
+        ClassValuesArray();
         XandYPointStorageArray();
         XCoordinateArray();
         YCoordinateArray();
@@ -367,12 +397,9 @@ public class GaussianNaiveBayes {
      */
     private static void Probabilityprintout() {
         FinalFormula();
-        for(int i = 0; i < ClassValues.size(); i++) {
-            for(double x : ClassValues) {
-                x = ClassValues.get(i);
-                System.out.println("Class" + " " + x + " " + "Probability:" + " " + FinalPartofFormula1);
-                break;
-            }
+        for(int i = 0; i < ClassValues2.size(); i++) {
+            int xx = ClassValuesArray[i];
+            System.out.println("Class" + " " + xx + " " + "Probability:" + " " + FinalPartofFormula1);
         }
     }
 }
