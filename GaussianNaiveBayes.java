@@ -6,23 +6,25 @@
  */
 
 //All the Imports I used for the project of doing Gaussian Naive Baye Heuristics.
-import java.util.Scanner;
+import java.util.*;
 import java.io.*;
-import java.util.ArrayList;
 
 public class GaussianNaiveBayes {
     //All the Static Arrays I used for Storing Points and User input for the program to use later on.
     private static Double[] XandYArray;
     private static double[] XCoordinates;
     private static double[] YCoordinatess;
-    private static int []classvaluesss;
     private static ArrayList<Double> dataset = new ArrayList<Double>();
     private static ArrayList<Double> XCoordinatess = new ArrayList<Double>();
+    private static ArrayList<Double> ClassXCoordinates = new ArrayList<Double>();
     private static ArrayList<Double> XandYPointStorage = new ArrayList<Double>();
     private static ArrayList<Double> YCoordinates = new ArrayList<Double>();
     private static ArrayList<Integer>ClassValues = new ArrayList<Integer>();
     private static ArrayList<Integer>ClassValues2 = new ArrayList<Integer>();
     private static int[]ClassValuesArray;
+    private static int[]XCoordinateClassValue;
+    private static ArrayList<Double>CoordinateSorter = new ArrayList<Double>();
+
 
     //All the Static Integers and Doubles I used for my Program when making it.
     private static int trueclassnumber;
@@ -67,23 +69,6 @@ public class GaussianNaiveBayes {
     private static void DataSetReadingConfirmation() {
         String a = "Data has been read";
         System.out.println(a);
-    }
-
-    /*
-      @param: The First Parameter of this method is using the declared Arraylist of Doubles, and scans into the data file giiven
-      , which is data.txt in this case.
-      @param: The Second Parameter of this method is scanning the .txt file given, which contains all the data points that
-      the program uses to calculate the probabilitys using the Gaussian Naive Bayes formula.
-      @return: the return value of this method is the X and Y point values stored within in the proper arrays that are needed
-      for them to work and perform the proper function for the final formula for Gaussian Naive Bayes.
-     */
-    private static void XandYStorerforAllClasses(ArrayList<Double>dataset) {
-        for(int i = 0; i < dataset.size(); i++) {
-            XCoordinates[i] = XCoordinatess.get(i);
-            YCoordinatess[i] = YCoordinates.get(i);
-            classvaluesss[i] = ClassValues.get(i);
-        }
-
     }
 
     /*
@@ -181,6 +166,21 @@ public class GaussianNaiveBayes {
             }
         }
     }
+    
+    private static void SortingMethodForClassValues() {
+        for(int i = 0; i < XCoordinatess.size(); i--) {
+            double val = (double) Double.parseDouble(String.valueOf(XCoordinates[i]));
+            ClassXCoordinates.add(val);
+            if(ClassValues2.get(i) < val) {
+                System.out.println(ClassXCoordinates.get(i));
+                System.out.println(ClassValues2.get(i));
+                if(ClassValues2.get(i) > val && ClassValues2.get(i) > 0) {
+                    break;
+                }
+            }
+
+        }
+    }
 
     /*
     @param: The First Parameter of this method is the make of a new Array for the use of the X and Y Point Storage,
@@ -258,6 +258,7 @@ public class GaussianNaiveBayes {
         MeanofXCoordinatesFramework();
         MeanofYCoordinatesFramework();
         Probabilityprintout();
+        SortingMethodForClassValues();
 
     }
 
