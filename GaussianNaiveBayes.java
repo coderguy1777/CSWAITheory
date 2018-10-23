@@ -166,7 +166,7 @@ public class GaussianNaiveBayes {
             }
         }
     }
-    
+
     private static void SortingMethodForClassValues() {
         for(int i = 0; i < XCoordinatess.size(); i--) {
             double val = (double) Double.parseDouble(String.valueOf(XCoordinates[i]));
@@ -200,7 +200,8 @@ public class GaussianNaiveBayes {
     }
 
     /*
-    @param:
+    @param: The First Parameter of this Method is that the static class values array is assigned
+    with the new array element of the size of ClassValuesArrayList.
     @param:
     @return:
      */
