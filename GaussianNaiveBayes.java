@@ -122,6 +122,11 @@ public class GaussianNaiveBayes {
     @return: The Return value of this method is the values for the X and Y user input being stored in the Arraylist, that
     being the Array list XandYPointStorage<>();
      */
+
+    private static double teststetstststst() {
+        double i = 0;
+        return i;
+    }
     public static ArrayList<ArrayList<Integer>> UserInput() {
         Scanner scan = new Scanner(System.in);
         System.out.println("Please Enter X:");
@@ -168,17 +173,10 @@ public class GaussianNaiveBayes {
     }
 
     private static void SortingMethodForClassValues() {
-        for(int i = 0; i < XCoordinatess.size(); i--) {
-            double val = (double) Double.parseDouble(String.valueOf(XCoordinates[i]));
+        for (int i = 0; i <= XCoordinatess.size(); i++) {
+            double val = Double.parseDouble(String.valueOf(XCoordinates[i]));
             ClassXCoordinates.add(val);
-            if(ClassValues2.get(i) < val) {
-                System.out.println(ClassXCoordinates.get(i));
-                System.out.println(ClassValues2.get(i));
-                if(ClassValues2.get(i) > val && ClassValues2.get(i) > 0) {
-                    break;
-                }
-            }
-
+            System.out.println(ClassXCoordinates.get(i));
         }
     }
 
@@ -202,8 +200,10 @@ public class GaussianNaiveBayes {
     /*
     @param: The First Parameter of this Method is that the static class values array is assigned
     with the new array element of the size of ClassValuesArrayList.
-    @param:
-    @return:
+    @param: The Second Parameter of this method is the ClassValues Array, and adds it for use later on in the
+    program itself.
+    @return: The Return value of this method is the Class Values Array Added within the Array for use
+    later on anywhere within the methods of the program itself.
      */
     private static void ClassValuesArray() {
         ClassValuesArray = new int[ClassValues2.size()];
@@ -341,7 +341,7 @@ public class GaussianNaiveBayes {
     @return: The Return value of this method is the variance for the class 1 probability.
      */
     private static double VarianceFrameWorkForYCoordinates(ArrayList<Double> YCoordinates) {
-        double variance2 = 0;
+        double variance2 ;
         VarianceofYCoordinates = 0;
         double meanformethod2 = MeanofYCoordinates;
         for (double pointvalue : YCoordinates) {
