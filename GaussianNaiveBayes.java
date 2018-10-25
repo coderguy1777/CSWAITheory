@@ -17,7 +17,7 @@ public class GaussianNaiveBayes {
     private static ArrayList<ArrayList<Double>> XCoordinatess = new ArrayList<>();
 
     //All the Static Integers and Doubles I used for my Program when making it.
-    private static int trueclassnumber;
+    private static int trueclassnumber; //Prints Class Value.
     private static Double Coordinate1; //Value for Storing X Coordinates.
     public static Double Coordinate2; //Value for Storing Y Coordinates.
     private static double xvalue1; //Value for the User input for the X Points to be used to calculate the final probability.
@@ -28,13 +28,7 @@ public class GaussianNaiveBayes {
     public static double SumofY;//Used to find the sum of all the Y Coordinates, mainly to be used for finding the mean value of the Y Coordinates.
     private static double MeanofYCoordinates;//Value that stores the Mean of the Y Coordinates once the SumofY is divided by 4 to find the mean of the Y Coordinates.
     private static double VarianceofYCoordinates; //Value that stores the Variance of the Y Coordinates, which is simply Standard Deviation^2
-    public static double MeanofEntireTrainingDataSet;//Value that stores the combined Mean of the dataset, that being MeanofX + MeanofY to find the final mean of the dataset.
-    private static double VarianceforBothXandYCoordinates; //Value that stores the Combined Variance of the X and Y Coordinates for the training dataset.
-    private static double FinalPartforX; //Stores the Final value for all X Values of the X Coordinates of the Dataset, and for use for the final combining of the class formula.
-    private static double FinalPartforY; //Stores the Final value for all Y Values of the Y Coordinates of the Dataset, and for use for the final combining of the class formula.
-    private static double FinalPartofFormula1;
-    private static double FinalPartofFormula2;
-    private static int secondcvalue;
+    private static double FinalPartofFormula; // Prints Final Class Probability
 
     public static void main(String[] args) {
         UserInput();
@@ -55,7 +49,6 @@ public class GaussianNaiveBayes {
                 if (dataset.size() < trueclassnumber + 1) {
                     dataset.add(new ArrayList<>());
                 }
-
                 Coordinate1 = scan.nextDouble();
                 Coordinate2 = scan.nextDouble();
                 dataset.get(trueclassnumber).add(Coordinate1);
@@ -129,7 +122,9 @@ public class GaussianNaiveBayes {
         int k = 0;
     }
 
-    private static void ClassProbabilityFinalMethod() {
-
+    private static void FinalClassProbability() {
+        int i = 0;
+        int k = 0;
+        int j = 0;
     }
 }
