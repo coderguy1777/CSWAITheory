@@ -1,69 +1,141 @@
-# Imports used for the back propagation, that being np for calculations, and random for random weights
+# All the imports used for this project, in this case numpy
 import numpy as np
-import random
 
-# Input training data list
-neuraltraining_data = np.array([
-     0, 1, 0,
-     1, 0, 0,
-     0, 1, 1,
-     1, 0, 1
-])
 
-# List of random weights
-weightlist = []
+# Training data list
+x = [
+      [1, 0],
+      [0, 1],
+      [1, 0],
+      [0, 0],
+ ]
 
-# for loop that Generates inputs for the list of random weights in between
-# -10 and 10 to be used later on in the back propagation program.
-for i in range(20):
-    weightgeneration = random.randint(-10,  10)
-    i = weightgeneration
-    weightlist.append(weightgeneration)
+idealout = [1, 0, 1, 0]
 
-# A List for inputs of training data.
-inputlist = []
-for i in neuraltraining_data:
-    inputlist.append(i)
+# Used for storing data for inputs
+l = []
 
-# Sigmoid Function for calculating the sigmoid
+# loops it all into a 2d list
+for iy in x:
+    for iz in iy:
+        l.append(iz)
+
+# Sigmoid function
 def sigmoid(x):
-    return 1 / (1 + np.exp(x))
+    return 1.0 / (1.0 + np.exp(-x))
 
-# Function for calculating sigmoid prime
-def sigmoidprime(x):
-    return (1. - sigmoid(x)) * sigmoid(x)
-
-# List that stores the sigmoid outputs
-sigmoids = []
-
-# for l
-for inputss in weightlist:
-    functionvar = sigmoid(inputss)
-    sigmoids.append(functionvar)
-
-# List for storing the outputs of the hidden layer when it is calculated.
-hiddenlayerinputss = []
-
-# Method for calculating the hidden layer inputs.
-def hiddenlayerinputs(w, inputtt, w2, inputtt2):
-    y = inputtt * w + inputtt2 * w2
-    return y
+# Sigmoid derivative
+def sigderivative(x):
+    return sigmoid(x)/(1.0 + sigmoid(x))
 
 
-# Class used for writing the code for the neuron of the neural network for the project of backpropgation,
-# and the used of XOR Gates within the project as well for the Backpropgation of the Neural Network.
-class Neuron():
+# Defines a Class for the Hidden Values to be stored in, along with inputs, outputs, etc.
+# Using this class, these values are mainly stored as tuples in this case.
+class Inputvals:
+    def __init__(self, values, name):
+        self.name = name
+        self.values = values
+
+    def valreturn(self):
+        return self.values
+
+    def nameval(self):
+        return self.name
+
+# Neuron class of the Neural Network for Backpropagation.
+class Neuron(object):
     def __init__(self):
-        x = 0
-        self.bias = .924
-        self.weight = weightlist.pop(x)
-        self.learningweight = 0.05
-
-
-    def test(self, bias):
+        self.learningrate = 0.7
+        self.learningmomentum = 0.3
+        self.weights = np.random.uniform(size=len(x) * 2) * 20 - 10
         self.bias = 1
-        print(self.bias)
+        self.predic = 1
+        self.weight2 = np.random.uniform(size=len(x) * 2) * 20 - 10
+        self.fowardprop = {}
+        self.h1arr = []
+        self.error = 1.0
+        self.h2arr = []
+        self.h2vals = []
+        self.outvals = []
+        self.errors = []
+        self.value = "Hidden Values"
+
+    # Initial Calculations for hidden layer
+    def calc11(self, x):
+        z1 = np.dot(x, self.weights) + self.bias
+        z2 = np.dot(x, self.weight2) + self.bias
+        h1val = z1 + z2
+        self.h1arr.append(self.sighvals(h1val))
+        return self.sighvals(h1val)
+
+    # For finding the sigmoid values of the hidden layer, aka activation function
+    def sighvals(self, x1):
+        return sigmoid(x1)
+
+    # Sum for the output value
+    def sumout(self, x2):
+        for i in self.h1arr:
+            self.h1sig(i)
+        return sum(x2 * self.weight2) + sum(x2 * self.weight2)
+
+    # Stores the foward prop values
+    def fowardpropvals(self):
+        for i in self.h1arr:
+            self.fowardprop[self.value] = i
+        return self.fowardprop
 
 
-my_object = Neuron()
-print(my_object.bias)
+    # Used for finding the sig derivative for certain parts
+    def sigderive(self, x4):
+        return sigderivative(x4)
+
+
+    # Sig derivative for the hidden layer values
+    def h1sig(self, x11):
+        return sigderivative(x11)
+
+
+# Does the basic object for the neural network
+hava = []
+o = Neuron()
+u = 0
+# Does Not find the output sum right.
+for i in l:
+    u = o.calc11(l[i])
+xx = o.sumout(u)
+
+# Function that does the error function for the neural network
+sigoutval = sigmoid(xx)
+errors = []
+error = 0 - sigoutval
+errors.append(error)
+
+# Does the delta sum for the neural
+delsum = 0
+delsumvar = []
+for i in errors:
+    delsum = sigderivative(sigoutval) * i
+    delsumvar.append(delsum)
+
+# Does the Gradient function for a neural network
+gradient = []
+gradfunc = 0
+for i in o.h1arr:
+    gradfunc = delsum * i
+    gradient.append(gradfunc)
+    o.weights += gradfunc
+
+print(gradfunc)
+
+# For Calculating the change in weights for the NN
+Cn = 0
+for i in gradfunc:
+    Cn = (o.learningrate * i) + (o.learningmomentum * o.weights - o.weight2)
+print(Cn)
+
+iuxx = 0
+for i in o.h1arr:
+    iuxx = sigderivative(i)
+
+print(iuxx)
+
